@@ -3,8 +3,10 @@
     name  => "ld31"
     author => "atrodo"
   }
-  width  = 800
-  height = 600
+  width  = 320
+  height = 240
+  cwidth  = 800
+  cheight = 600
 
   max_do_aux           = 50
   show_phys_box        = 0
