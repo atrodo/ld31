@@ -1,4 +1,4 @@
-var seconds_match = /^(\d)*s$/;
+var seconds_match = /^(\d*)s$/;
 
 var Cooldown = Moo.class(function()
 {
