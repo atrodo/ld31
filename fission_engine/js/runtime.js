@@ -3,6 +3,8 @@
     $.extend(this, {
       width:  [% width %],
       height: [% height %],
+      cwidth:  [% cwidth || width %],
+      cheight: [% cheight || height %],
       trax_x: [% width / 2 %],
       trax_y: [% height / 2 %],
 
@@ -66,6 +68,9 @@
     var run_physics = true
 
     var stage = new Gfx(self.width, self.height)
+
+    $(stage.canvas).width(self.cwidth);
+    $(stage.canvas).height(self.cheight);
 
     content
       .empty()
