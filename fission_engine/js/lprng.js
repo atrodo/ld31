@@ -1,8 +1,11 @@
   //http://jsperf.com/lprng-vs-math-random
-  function lprng(seed)
+  function lprng(seed, gaussian)
   {
     var mod = Math.pow(2, 32);
     var magic = 0x80f77deb;
+
+    if (gaussian < 1)
+      gaussian = 1
 
     var buffer = 16
     this.data = new Uint32Array(buffer)
@@ -66,7 +69,39 @@
     }
 
 
-    this.random = this.prng
+    this.random = function(multi)
+    {
+       multi = multi || 1
+       var val = 0
+       for (var i = gaussian; i-->0;)
+       {
+         val += this.prng()
+       }
+       val /= gaussian
+       return (val * 1/mod) * multi
+    }
+
+    this.randomint = function(multi)
+    {
+      return this.random(multi) | 0
+    }
+
+    this.random2 = function(max)
+    {
+      if (max <= 1)
+        return 0;
+
+      var partn = (mod / max) | 0
+
+      while (true)
+      {
+        var bits = this.randomint(mod)
+        var val  = (bits / partn) | 0
+
+        if (val < max)
+          return val;
+      }
+    }
 
     if (seed === null)
       this.seed(Math.floor(Math.random() * Math.pow(2, 32)))
