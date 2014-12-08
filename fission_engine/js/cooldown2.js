@@ -53,6 +53,23 @@ var Cooldown = Moo.class(function()
     default: false,
   })
 
+  this.has("layer", {
+    is: "rw",
+    default: undefined,
+    coerce: function(layer)
+    {
+      if (this.layer instanceof Layer)
+      {
+        this.layer.events.off("frame_logic", this)
+      }
+
+      if (layer instanceof Layer)
+      {
+        layer.events.on("frame_logic", this)
+      }
+    }
+  })
+
   this.method("action_id", function()
   {
     if (this.result instanceof Action)
@@ -62,7 +79,8 @@ var Cooldown = Moo.class(function()
 
   this.method("frame", function()
   {
-    this.frames--
+    if (this.frames > 0)
+      this.frames--
     if (this.frames <= 0)
       return this.result
     return this
@@ -75,7 +93,7 @@ var Cooldown = Moo.class(function()
 
   this.method("is_done", function()
   {
-    return this.frames >= this.total
+    return this.frames <= 0
   })
 
   this.method("get_remaining", function()

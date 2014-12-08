@@ -25,6 +25,7 @@ function Action(options, kb_trigger)
       click: null,
       action: new action_check(_id),
     },
+    cooldown: null,
     data: {}
   }, options);
 
@@ -454,6 +455,13 @@ function Input(options)
       if (!(action instanceof Action))
         return
 
+      if (action.cooldown != null)
+      {
+        if (!action.cooldown.is_done())
+          return;
+        action.cooldown = null
+      }
+
       var result
       try
       {
@@ -476,6 +484,11 @@ function Input(options)
       {
         result.result = action
         actions[i] = result
+        if (result.layer === undefined)
+        {
+          result.layer = self.layer
+          action.cooldown = result
+        }
       }
 
       if (is_done_actions)

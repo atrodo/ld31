@@ -12,7 +12,7 @@
           // Cooldown returns itself or a function
           var cd = cb.frame()
 
-          if (cd != cb)
+          if (cd != cb && cd != false)
           {
             cb.reset()
             cb = cd
